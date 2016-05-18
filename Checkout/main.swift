@@ -19,7 +19,7 @@ var input: Int = -1;
 var item: Item
 var shoppingCart: [Item] = []
 
-// while input is not 3 (quit), keep printing menu
+// Keep printing menu if the input is not 3
 while(input != 3) {
     print("1) Add an item to your cart\n"
         + "2) Proceed to checkout\n"
@@ -29,8 +29,10 @@ while(input != 3) {
     
     // switch on input
     switch input {
+    
+    // Add item to cart
     case 1:
-        // enter item information
+        // Entering item information
         print("Enter item description: ", terminator: "")
         var description = readLine(stripNewline: true)!
         
@@ -40,14 +42,18 @@ while(input != 3) {
         print("Price per unit: $", terminator: "")
         var pricePerUnit = (Double(readLine(stripNewline: true)!)!)
         
-        // create a tuple from data collected
+        // Create a tuple from data collected
         item = Item(description: description, qty: qty, pricePerUnit: pricePerUnit)
-        // insert item tuple into the beginning of array
+        
+        // Insert item tuple into the beginning of array
         shoppingCart.insert(item, atIndex: 0)
         break
+    
+    // Checkout process
     case 2:
-        // if shopping cart is empty, do not complete checkout
-        // otherwise, calculate subtotal, taxes, and total
+        
+        // If shopping cart is empty, do not complete checkout
+        // Otherwise, calculate subtotal, taxes, and total and print it all out
         if (shoppingCart.count <= 0){
             print("Shopping cart is empty")
         } else {
@@ -58,18 +64,21 @@ while(input != 3) {
                     + "@ \(String(format:"%.2f", item.pricePerUnit)) ea")
                 subtotal += Double(item.qty) * item.pricePerUnit
             }
-            print("Subtotal: $\(String(format:"%.2f",subtotal))")
+            
             var taxPercent = 4.712
             var tax = subtotal * taxPercent/100
-            print("Tax (\(String(format:"%.3f",taxPercent))%): $\(String(format:"%.2f",subtotal))")
             var total = subtotal + tax
+            
+            print("Subtotal: $\(String(format:"%.2f",subtotal))")
+            print("Tax (\(String(format:"%.3f",taxPercent))%): $\(String(format:"%.2f",subtotal))")
+            
             print("Total: $\(String(format:"%.2f",total))")
             
-            input = 3//exit program
+            input = 3 // exits program, since checkout is completed
         }
         
     default: ()
-        
+        // loop by default
     }
 }
 
