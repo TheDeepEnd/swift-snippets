@@ -8,7 +8,7 @@
 
 import Foundation
 
-// I created a struct to make it easier to pass into an array
+// Used a struct to facilitate passing into an array
 struct Item {
     var description:String
     var qty:Int
@@ -24,13 +24,14 @@ while(input != 3) {
     print("1) Add an item to your cart\n"
         + "2) Proceed to checkout\n"
         + "3) Quit", terminator: "\n> ")
-    // read line from user, stripping new line
+    
+    // Read user's menu selection
     input = (Int((readLine(stripNewline: true))!))!
     
-    // switch on input
+    // Switch depending on user's input
     switch input {
     
-    // Add item to cart
+    // 1: Add item to cart
     case 1:
         // Entering item information
         print("Enter item description: ", terminator: "")
@@ -49,7 +50,7 @@ while(input != 3) {
         shoppingCart.insert(item, atIndex: 0)
         break
     
-    // Checkout process
+    // 2: Checkout process
     case 2:
         
         // If shopping cart is empty, do not complete checkout
@@ -58,13 +59,18 @@ while(input != 3) {
             print("Shopping cart is empty")
         } else {
             var subtotal = 0.0
+            
+            // Print out array by iterating through array
             for item in shoppingCart{
                 print("\(item.qty) – "
                     + "\(item.description) "
                     + "@ \(String(format:"%.2f", item.pricePerUnit)) ea")
+                
+                // Add item to subtotal
                 subtotal += Double(item.qty) * item.pricePerUnit
             }
             
+            // More Calculations
             var taxPercent = 4.712
             var tax = subtotal * taxPercent/100
             var total = subtotal + tax
@@ -76,9 +82,9 @@ while(input != 3) {
             
             input = 3 // exits program, since checkout is completed
         }
-        
+    
     default: ()
-        // loop by default
+        // Loop by default
     }
 }
 
