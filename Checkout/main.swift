@@ -10,9 +10,9 @@ import Foundation
 
 // Used a struct to facilitate passing into an array
 struct Item {
-    var description:String
-    var qty:Int
-    var pricePerUnit:Double
+    var description:String!
+    var qty:Int!
+    var pricePerUnit:Double!
 }
 
 var input: Int = -1;
@@ -25,8 +25,12 @@ while(input != 3) {
         + "2) Proceed to checkout\n"
         + "3) Quit", terminator: "\n> ")
     
-    // Read user's menu selection
-    input = (Int((readLine(stripNewline: true))!))!
+    // Read user's menu selection, setting input only if not nil
+    if let testInput = readLine(stripNewline: true){
+        if let intTestInput = Int(testInput) {
+            input = intTestInput
+        }
+    }
     
     // Switch depending on user's input
     switch input {
@@ -34,20 +38,40 @@ while(input != 3) {
     // 1: Add item to cart
     case 1:
         // Entering item information
+        var enterInfoLoop = true // initial loop condition
+        var description: String?
+        var qty:Int?
+        var pricePerUnit:Double?
         print("Enter item description: ", terminator: "")
-        var description = readLine(stripNewline: true)!
+        if let testDescription = readLine(stripNewline: true) {
+            description = testDescription
+        }
+        
         
         print("Enter item quantity: ", terminator: "")
-        var qty = (Int(readLine(stripNewline: true)!)!)
+        if let testQty = readLine(stripNewline: true) {
+            if let testIntQty = Int(testQty) {
+                qty = testIntQty
+            }
+        }
         
         print("Price per unit: $", terminator: "")
-        var pricePerUnit = (Double(readLine(stripNewline: true)!)!)
+        if let testPrice = readLine(stripNewline: true) {
+            if let testDoubPrice = Double(testPrice) {
+                pricePerUnit = testDoubPrice
+            }
+        }
         
-        // Create a tuple from data collected
-        item = Item(description: description, qty: qty, pricePerUnit: pricePerUnit)
+        // Create a tuple from data collected if input was not blank
+        if description != "" && qty != nil && pricePerUnit != nil {
+            item = Item(description: description, qty: qty, pricePerUnit: pricePerUnit)
+            
+            // Insert item tuple into the beginning of array
+            shoppingCart.insert(item, atIndex: 0)
+        } else {
+            print("Error: Could not add item. (Did you forget to fill something out?)")
+        }
         
-        // Insert item tuple into the beginning of array
-        shoppingCart.insert(item, atIndex: 0)
         break
     
     // 2: Checkout process
